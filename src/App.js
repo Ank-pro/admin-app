@@ -5,9 +5,9 @@ import { AdminDashBoard } from './dashboard/AdminDashboard';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <div className="App">
-        <Routes>
+        <Routes >
           <Route path="/admin" element={<AdminLoginForm />} />
           <Route path="/dashboard" element={<AdminDashBoard />} />
         </Routes>
