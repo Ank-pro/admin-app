@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {api} from '../api';
 import './admin.css';
 import {Cookies, cookies} from '../api/index'
+import { AuthContext } from './AuthContext';
 
 function AdminLoginForm() {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ function AdminLoginForm() {
   const [fieldCheck, setFieldCheck] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { isAuthenticated, login, logout } = useContext(AuthContext);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,6 +41,8 @@ function AdminLoginForm() {
       const response = await api.post('/admin/login', { Email: email, Password: password });
       if (response.data.success) {
         cookies.set('TOKEN', response.data.token)
+        login(response.data.token)
+        
         navigate('/dashboard');
       } else {
         setError('Invalid email or password');

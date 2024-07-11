@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import './dashboard.css';
 import { Modal } from '../modal/modal';
-import { useNavigate } from 'react-router-dom';
-import { api } from '../api';
+import { useNavigate , redirect } from 'react-router-dom';
+import { api, cookies } from '../api';
+import { AuthContext } from '../AdminLogin/AuthContext';
 
 export function AdminDashBoard() {
+    const { isAuthenticated, login, logout } = useContext(AuthContext);
     const [products, setProducts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -109,7 +111,8 @@ export function AdminDashBoard() {
     }
 
     function handleLogout() {
-        localStorage.removeItem('adminToken');
+        logout()
+       cookies.remove('TOKEN')
         navigate('/admin');
     }
 
