@@ -1,0 +1,29 @@
+.modal {
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    max-width: 700px;
+    width: 90%;
+    background-color: white; 
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    background-color: red;
+    right: 10px;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: -10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    background-color: rgb(200, 0, 0);
+}
