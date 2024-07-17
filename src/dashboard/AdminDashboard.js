@@ -1,7 +1,7 @@
-import { useEffect, useState,useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import './dashboard.css';
 import { Modal } from '../modal/modal';
-import { useNavigate , redirect } from 'react-router-dom';
+import { useNavigate, redirect } from 'react-router-dom';
 import { api, cookies } from '../api';
 import { AuthContext } from '../AdminLogin/AuthContext';
 
@@ -54,47 +54,38 @@ export function AdminDashBoard() {
     };
 
     function handleSubmit(e) {
-        e.preventDefault();
-        console.log('Submitting form data:', formData);
-        const url = isEditMode ? `/product/product/${currentProductId}` : '/product/add';
-        const { brand, name, description, price, category,imageUrl } = formData;
-        const formD = new FormData();
+    e.preventDefault();
+    console.log('Submitting form data:', formData);
+    const url = isEditMode ? `/product/product/${currentProductId}` : '/product/add';
+    
+    const request = isEditMode ? api.put : api.post;
 
-        formD.append('avatar', formData.imageUrl);
-        formD.append("body", JSON.stringify({ brand, name, description, price, category }));
-
-        const request = isEditMode ? api.put : api.post;
-
-        request(url, formD, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        })
-            .then((res) => {
-                console.log("Product saved:", res.data);
-                setProducts((prevProducts) => {
-                    if (isEditMode) {
-                        return prevProducts.map((product) =>
-                            product._id === currentProductId ? res.data : product
-                        );
-                    }
-                    return [...prevProducts, res.data];
-                });
-                setIsModalOpen(false);
-                setIsEditMode(false);
-                setFormData({
-                    name: '',
-                    description: '',
-                    category: '',
-                    brand: '',
-                    price: '',
-                    imageUrl: ''
-                });
-            })
-            .catch((err) => {
-                console.log("Error saving product:", err);
+    request(url, formData)
+        .then((res) => {
+            console.log("Product saved:", res.data);
+            setProducts((prevProducts) => {
+                if (isEditMode) {
+                    return prevProducts.map((product) =>
+                        product._id === currentProductId ? res.data : product
+                    );
+                }
+                return [...prevProducts, res.data];
             });
-    }
+            setIsModalOpen(false);
+            setIsEditMode(false);
+            setFormData({
+                name: '',
+                description: '',
+                category: '',
+                brand: '',
+                price: '',
+                imageUrl: ''
+            });
+        })
+        .catch((err) => {
+            console.log("Error saving product:", err);
+        });
+}
 
     function handleEdit(product) {
         setCurrentProductId(product._id);
@@ -112,7 +103,7 @@ export function AdminDashBoard() {
 
     function handleLogout() {
         logout()
-       cookies.remove('TOKEN')
+        cookies.remove('TOKEN')
         navigate('/admin');
     }
 
@@ -196,7 +187,13 @@ export function AdminDashBoard() {
                     </div>
                     <div>
                         <label>Image URL:</label>
-                        <input type="file" onChange={handleFileChange} accept="image/*"  />
+                        <input
+                            type="text"
+                            name="imageUrl"
+                            value={formData.imageUrl}
+                            onChange={handleChange}
+                            placeholder="Enter image URL"
+                        />
                     </div>
                     <button type="submit">{isEditMode ? 'Save Changes' : 'Add Product'}</button>
                 </form>
