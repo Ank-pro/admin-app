@@ -43,15 +43,15 @@ export function AdminDashBoard() {
         setFormData({ ...formData, [name]: value });
     }
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                imageUrl: file,
-            }));
-        }
-    };
+    // const handleFileChange = (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         setFormData((prevFormData) => ({
+    //             ...prevFormData,
+    //             imageUrl: file,
+    //         }));
+    //     }
+    // };
 
     function handleSubmit(e) {
     e.preventDefault();
